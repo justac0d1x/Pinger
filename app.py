@@ -15,7 +15,7 @@ urls_to_ping = [url.strip() for url in urls_to_ping if url.strip()]
 
 # Интервал пинга в секундах (3-5 минут = 180-300 секунд)
 # По умолчанию 3 минуты
-ping_interval = int(os.environ.get('PING_INTERVAL', 180))
+ping_interval = int(os.environ.get('PING_INTERVAL', 30))
 
 def ping_urls():
     """Функция для пинга всех URL в списке"""
