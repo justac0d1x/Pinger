@@ -6,19 +6,11 @@ from flask import Flask, jsonify
 from datetime import datetime
 
 app = Flask(__name__)
-
-# Получаем список URL из переменной окружения
-# Формат: "https://url1.com,https://url2.com,https://url3.com"
 urls_to_ping = os.environ.get('URLS_TO_PING', '').split(',')
-# Фильтруем пустые строки
 urls_to_ping = [url.strip() for url in urls_to_ping if url.strip()]
-
-# Интервал пинга в секундах (3-5 минут = 180-300 секунд)
-# По умолчанию 3 минуты
 ping_interval = int(os.environ.get('PING_INTERVAL', 30))
 
 def ping_urls():
-    """Функция для пинга всех URL в списке"""
     while True:
         for url in urls_to_ping:
             try:
@@ -26,23 +18,18 @@ def ping_urls():
                 print(f"[{datetime.now()}] Пинг {url} - Статус: {response.status_code}")
             except requests.exceptions.RequestException as e:
                 print(f"[{datetime.now()}] Ошибка при пинге {url}: {e}")
-        
-        # Ждем указанный интервал
         time.sleep(ping_interval)
 
 @app.route('/')
 def index():
-    """Главная страница с информацией о сервисе"""
     return jsonify({
         'status': 'active',
         'urls_to_ping': urls_to_ping,
-        'ping_interval_seconds': ping_interval,
-        'next_ping_in_seconds': ping_interval
+        'ping_interval_seconds': ping_interval
     })
 
 @app.route('/ping')
 def manual_ping():
-    """Ручной пинг для проверки"""
     results = []
     for url in urls_to_ping:
         try:
@@ -61,7 +48,6 @@ def manual_ping():
     return jsonify(results)
 
 if __name__ == '__main__':
-    # Запускаем поток для пинга, если есть URL
     if urls_to_ping:
         ping_thread = threading.Thread(target=ping_urls, daemon=True)
         ping_thread.start()
