@@ -2,7 +2,7 @@
 
 Простой сервис для поддержания активности приложений на Render через периодический пинг.
 
-## Деплой на Render(Настройки)
+## Деплой на Render
    - **Environment**: `Python`
    - **Build Command**: `pip install -r requirements.txt`
    - **Start Command**: `python app.py`
