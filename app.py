@@ -15,9 +15,9 @@ def ping_urls():
         for url in urls_to_ping:
             try:
                 response = requests.get(url, timeout=10)
-                print(f"[{datetime.now()}] Пинг {url} - Статус: {response.status_code}")
+                print(f"[{datetime.now()}] Ping {url} - Status: {response.status_code}")
             except requests.exceptions.RequestException as e:
-                print(f"[{datetime.now()}] Ошибка при пинге {url}: {e}")
+                print(f"[{datetime.now()}] Error pinging {url}: {e}")
         time.sleep(ping_interval)
 
 @app.route('/')
@@ -51,11 +51,10 @@ if __name__ == '__main__':
     if urls_to_ping:
         ping_thread = threading.Thread(target=ping_urls, daemon=True)
         ping_thread.start()
-        print(f"Запущен пингер для URL: {urls_to_ping}")
-        print(f"Интервал пинга: {ping_interval} секунд")
+        print(f"Pinger started for URLs: {urls_to_ping}")
+        print(f"Ping interval: {ping_interval} seconds")
     else:
-        print("ВНИМАНИЕ: Не указаны URL для пинга. Добавьте переменную окружения URLS_TO_PING")
+        print("WARNING: No URLs to ping. Add URLS_TO_PING environment variable")
     
-    # Запускаем Flask сервер
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
